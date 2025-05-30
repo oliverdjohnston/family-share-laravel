@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import { MainLayout } from "@/layouts/main-layout";
 import { PageProps, User as UserType } from "@/types";
 import { useForm } from "@inertiajs/react";
@@ -110,9 +111,8 @@ export default function Profile({ user }: ProfilePageProps) {
                             <form onSubmit={handlePasswordSubmit} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="current_password">Current Password</Label>
-                                    <Input
+                                    <PasswordInput
                                         id="current_password"
-                                        type="password"
                                         value={passwordForm.data.current_password}
                                         onChange={(e) => passwordForm.setData("current_password", e.target.value)}
                                         required
@@ -124,9 +124,8 @@ export default function Profile({ user }: ProfilePageProps) {
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <div className="space-y-2">
                                         <Label htmlFor="password">New Password</Label>
-                                        <Input
+                                        <PasswordInput
                                             id="password"
-                                            type="password"
                                             value={passwordForm.data.password}
                                             onChange={(e) => passwordForm.setData("password", e.target.value)}
                                             required
@@ -135,9 +134,8 @@ export default function Profile({ user }: ProfilePageProps) {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="password_confirmation">Confirm New Password</Label>
-                                        <Input
+                                        <PasswordInput
                                             id="password_confirmation"
-                                            type="password"
                                             value={passwordForm.data.password_confirmation}
                                             onChange={(e) => passwordForm.setData("password_confirmation", e.target.value)}
                                             required
