@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { LinkButton } from "@/components/ui/link-button";
 import { PageProps } from "@/types";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { ChevronDown, LogOut, User } from "lucide-react";
 import { useState } from "react";
 
@@ -19,11 +19,11 @@ export function Navigation() {
             <div className="mx-auto max-w-7xl px-4 lg:px-8">
                 <div className="flex h-14 items-center justify-between sm:h-16">
                     <div className="flex min-w-0 flex-1 items-center">
-                        <LinkButton variant="ghost" href="/" className="shrink-0 cursor-pointer p-0">
-                            <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-base font-bold text-transparent sm:text-lg lg:text-xl">
+                        <Link href="/" className="shrink-0 cursor-pointer p-0">
+                            <span className="text-primary hover:text-primary/80 text-base font-bold transition-colors sm:text-lg lg:text-xl">
                                 oliver is cool
                             </span>
-                        </LinkButton>
+                        </Link>
                     </div>
 
                     <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-4">
@@ -31,9 +31,9 @@ export function Navigation() {
                             variant="ghost"
                             size="sm"
                             className="hidden shrink-0 cursor-pointer px-2 text-xs sm:flex lg:px-4 lg:text-sm"
-                            href="/"
+                            href="/dashboard"
                         >
-                            Home
+                            Dashboard
                         </LinkButton>
                         {auth?.user ? (
                             <DropdownMenu onOpenChange={setIsDropdownOpen}>
