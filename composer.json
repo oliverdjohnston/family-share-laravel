@@ -14,8 +14,16 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "tightenco/ziggy": "^2.4",
+        "ext-bcmath": "*",
+        "ext-fileinfo": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "ext-xml": "*",
         "ext-pdo_sqlite": "*",
-        "ext-sqlite3": "*"
+        "ext-sqlite3": "*",
+        "ext-curl": "*",
+        "ext-zip": "*",
+        "ext-gd": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
