@@ -19,7 +19,7 @@ jobs:
           php-version: "8.3"
 
       - name: Install Dependencies
-        run: composer install --optimize-autoloader --no-dev --no-interaction --no-progress -prefer-dist
+        run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,6 +28,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Build NPM Assets
+        run: npm run build
 
       - name: Synchronise Files to Server
         uses: easingthemes/ssh-deploy@v2.1.5
