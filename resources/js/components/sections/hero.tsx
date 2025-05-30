@@ -15,21 +15,21 @@ export function Hero() {
 
                 <div className="flex flex-wrap gap-4">
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
-                        <CardHeader>
-                            <CardTitle>Total Games in Library</CardTitle>
-                            <CardDescription>Placeholder number of games in library</CardDescription>
+                        <CardHeader className="text:lg md:text-xl">
+                            <CardTitle>Total Games</CardTitle>
+                            <CardDescription>Placeholder</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
-                        <CardHeader>
-                            <CardTitle>Total Steam Library Value</CardTitle>
-                            <CardDescription>Placeholder value of library</CardDescription>
+                        <CardHeader className="text:lg md:text-xl">
+                            <CardTitle>Total Steam Value</CardTitle>
+                            <CardDescription>Placeholder</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-full xl:flex-[1_1_calc(33.333%-0.67rem)]">
-                        <CardHeader>
+                        <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Average Game Value</CardTitle>
-                            <CardDescription>Placeholder average game value</CardDescription>
+                            <CardDescription>Placeholder</CardDescription>
                         </CardHeader>
                     </Card>
                 </div>
