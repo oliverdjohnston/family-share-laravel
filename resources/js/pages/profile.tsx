@@ -123,7 +123,7 @@ export default function Profile({ user }: ProfilePageProps) {
                             <div className="mb-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-950/20">
                                 <div className="flex items-center justify-between">
                                     <p className="text-sm text-blue-800 dark:text-blue-200">Need help finding your Steam64 ID?</p>
-                                    <LinkButton href="https://steamid.io/" external={true} variant="outline" size="sm" className="ml-2">
+                                    <LinkButton href="https://steamid.xyz/" external={true} variant="outline" size="sm" className="ml-2">
                                         <ExternalLink className="mr-1 h-3 w-3" />
                                         Find Steam ID
                                     </LinkButton>
