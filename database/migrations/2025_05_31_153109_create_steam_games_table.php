@@ -16,6 +16,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('appid')->unique();
                 $table->string('name');
+                $table->string('img_icon_url')->nullable();
                 $table->decimal('steam_value', 8, 2)->nullable();
                 $table->decimal('cdkeys_value', 8, 2)->nullable();
                 $table->timestamps();

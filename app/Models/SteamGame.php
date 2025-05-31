@@ -10,6 +10,7 @@ class SteamGame extends Model
     protected $fillable = [
         'appid',
         'name',
+        'img_icon_url',
         'steam_value',
         'cdkeys_value',
     ];
@@ -33,5 +34,17 @@ class SteamGame extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'steam_library');
+    }
+
+    /**
+     * Get the full Steam icon URL
+     */
+    public function getIconUrlAttribute(): ?string
+    {
+        if (!$this->img_icon_url) {
+            return null;
+        }
+
+        return "https://media.steampowered.com/steamcommunity/public/images/apps/{$this->appid}/{$this->img_icon_url}.jpg";
     }
 }

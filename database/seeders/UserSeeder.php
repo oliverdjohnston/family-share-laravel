@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
         User::firstOrCreate([
             'name' => 'Oliver Johnston',
             'email' => 'admin@oliver.cool',
+            'steam_id' => '76561198395597231',
             'password' => Hash::make('Password123!'),
         ]);
     }

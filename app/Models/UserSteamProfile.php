@@ -10,7 +10,6 @@ class UserSteamProfile extends Model
     protected $fillable = [
         'user_id',
         'steam_id',
-        'steam_username',
         'last_synced_at',
     ];
 
