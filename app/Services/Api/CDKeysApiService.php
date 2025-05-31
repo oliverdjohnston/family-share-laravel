@@ -55,7 +55,7 @@ class CDKeysApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->post($this->baseUrl, $payload);
+            $response = $this->getHttpClient()->retry(3, 250)->post($this->baseUrl, $payload);
 
             if ($response->successful()) {
                 return $response->json();

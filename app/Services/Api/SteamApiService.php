@@ -47,7 +47,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
 
             if ($response->successful()) {
                 return $response->json();
@@ -82,7 +82,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
 
             if ($response->successful()) {
                 return $response->json();
@@ -90,6 +90,11 @@ class SteamApiService
 
             return null;
         } catch (\Exception $e) {
+            // if the exception message contains the "no stats" error, return null
+            if (str_contains($e->getMessage(), 'no stats')) {
+                return null;
+            }
+
             Log::error('Steam API GetPlayerAchievements exception: ' . $e->getMessage());
             return null;
         }
@@ -107,7 +112,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
 
             if ($response->successful()) {
                 $data = $response->json();
