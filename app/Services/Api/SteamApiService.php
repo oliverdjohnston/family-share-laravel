@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class SteamApiService
 {
-    private string $apiKey;
+    private ?string $apiKey;
     private string $baseUrl;
     private string $storeUrl;
 
@@ -38,6 +38,12 @@ class SteamApiService
      */
     public function getOwnedGames(string $steamId, bool $includeAppInfo = true): ?array
     {
+        // return null if the API key is not configured
+        if (!$this->apiKey) {
+            Log::warning('Steam API key not configured');
+            return null;
+        }
+
         $url = "{$this->baseUrl}/IPlayerService/GetOwnedGames/v0001/";
 
         $params = [
@@ -67,6 +73,12 @@ class SteamApiService
      */
     public function getPlayerAchievements(string $steamId, int $appId): ?array
     {
+        // return null if the API key is not configured
+        if (!$this->apiKey) {
+            Log::warning('Steam API key not configured');
+            return null;
+        }
+
         $url = "{$this->baseUrl}/ISteamUserStats/GetPlayerAchievements/v1/";
 
         $params = [
@@ -123,6 +135,12 @@ class SteamApiService
      */
     public function getPlayerSummaries(string $steamId): ?array
     {
+        // return null if the API key is not configured
+        if (!$this->apiKey) {
+            Log::warning('Steam API key not configured');
+            return null;
+        }
+
         $url = "{$this->baseUrl}/ISteamUser/GetPlayerSummaries/v0002/";
 
         $params = [
