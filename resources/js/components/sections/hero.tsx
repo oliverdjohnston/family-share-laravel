@@ -22,19 +22,19 @@ export function Hero({ stats }: HeroProps) {
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Total Games</CardTitle>
-                            <CardDescription>{stats?.totalGames?.toLocaleString() || "Loading..."}</CardDescription>
+                            <CardDescription className="text-base md:text-lg">{stats?.totalGames?.toLocaleString() || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Total Steam Value</CardTitle>
-                            <CardDescription>£{stats?.totalSteamValue || "Loading..."}</CardDescription>
+                            <CardDescription className="text-base md:text-lg">£{stats?.totalSteamValue || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-full xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Average Game Value</CardTitle>
-                            <CardDescription>£{stats?.averageSteamValue || "Loading..."}</CardDescription>
+                            <CardDescription className="text-base md:text-lg">£{stats?.averageSteamValue || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                 </div>
