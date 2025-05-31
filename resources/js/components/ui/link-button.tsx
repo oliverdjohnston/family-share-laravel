@@ -14,13 +14,23 @@ export interface LinkButtonProps
   size?: ButtonVariants['size']
   href: string
   external?: boolean
+  isActive?: boolean
 }
 
 const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
-  ({ className, variant, size, href, external = false, children, ...props }, ref) => {
-    const linkClassName = cn(buttonVariants({ variant, size, className }))
+  ({ className, variant, size, href, external = false, isActive = false, children, ...props }, ref) => {
+    const activeClassName = isActive && variant === "link"
+      ? "underline underline-offset-4"
+      : isActive && variant === "ghost"
+      ? "bg-accent text-accent-foreground"
+      : ""
 
-    // use regular anchor tag for external links
+    const linkClassName = cn(
+      buttonVariants({ variant, size }),
+      activeClassName,
+      className
+    )
+
     if (external) {
       return (
         <a
@@ -36,7 +46,6 @@ const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       )
     }
 
-    // use the inertia link component for internal navigation
     return (
       <Link
         href={href}
