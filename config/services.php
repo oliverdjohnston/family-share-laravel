@@ -36,13 +36,13 @@ return [
     ],
 
     'steam' => [
-        'api_key' => env('STEAM_API_KEY'),
-        'default_steam_id' => env('STEAM_ID'),
+        'api_key' => env('STEAM_API_KEY', ''),
+        'default_steam_id' => env('STEAM_ID', ''),
     ],
 
     'cdkeys' => [
-        'algolia_api_key' => env('CDKEYS_ALGOLIA_API_KEY'),
-        'algolia_application_id' => env('CDKEYS_ALGOLIA_APPLICATION_ID'),
+        'algolia_api_key' => env('CDKEYS_ALGOLIA_API_KEY', ''),
+        'algolia_application_id' => env('CDKEYS_ALGOLIA_APPLICATION_ID', ''),
     ],
 
 ];
