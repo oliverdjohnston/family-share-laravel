@@ -109,6 +109,7 @@ class SteamApiService
 
         $params = [
             'appids' => $appId,
+            'cc' => 'GB',
         ];
 
         try {
