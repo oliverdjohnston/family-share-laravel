@@ -23,14 +23,7 @@ class SteamApiService
      */
     private function getHttpClient()
     {
-        return Http::withHeaders([
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept' => 'application/json',
-            'Accept-Language' => 'en-US,en;q=0.9',
-            'Accept-Encoding' => 'gzip, deflate, br',
-            'Connection' => 'keep-alive',
-            'Cache-Control' => 'no-cache',
-        ]);
+        return Http::acceptJson()->withUserAgent('FamilyShareComparison/1.0');
     }
 
     /**
@@ -95,7 +88,6 @@ class SteamApiService
                 return $response->json();
             }
 
-            Log::error('Steam API GetPlayerAchievements failed');
             return null;
         } catch (\Exception $e) {
             Log::error('Steam API GetPlayerAchievements exception: ' . $e->getMessage());

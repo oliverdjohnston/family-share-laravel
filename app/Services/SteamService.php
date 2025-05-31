@@ -44,13 +44,14 @@ class SteamService
                     ]
                 );
 
-                SteamLibrary::updateOrCreate(
+                // only create if it doesn't exist
+                SteamLibrary::firstOrCreate(
                     [
                         'user_id' => $user->id,
                         'steam_game_id' => $steamGame->id,
                     ],
                     [
-                        'acquired_at' => now(),
+                        'acquired_at' => null,
                     ]
                 );
             }
@@ -95,7 +96,6 @@ class SteamService
 
                 SteamLibrary::where('user_id', $user->id)
                     ->where('steam_game_id', $game->id)
-                    ->whereNull('acquired_at')
                     ->update(['acquired_at' => $purchaseDate]);
 
                 return true;
