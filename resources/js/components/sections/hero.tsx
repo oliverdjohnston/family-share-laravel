@@ -1,8 +1,13 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
+import { Stats } from "@/types";
 import { ChartColumnStacked } from "lucide-react";
 
-export function Hero() {
+interface HeroProps {
+    stats?: Stats;
+}
+
+export function Hero({ stats }: HeroProps) {
     return (
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center gap-8 text-center md:gap-16">
@@ -17,19 +22,19 @@ export function Hero() {
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Total Games</CardTitle>
-                            <CardDescription>Placeholder</CardDescription>
+                            <CardDescription>{stats?.totalGames?.toLocaleString() || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-0 md:flex-[1_1_calc(50%-0.5rem)] xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Total Steam Value</CardTitle>
-                            <CardDescription>Placeholder</CardDescription>
+                            <CardDescription>£{stats?.totalSteamValue || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                     <Card className="min-w-full flex-1 md:min-w-full xl:flex-[1_1_calc(33.333%-0.67rem)]">
                         <CardHeader className="text:lg md:text-xl">
                             <CardTitle>Average Game Value</CardTitle>
-                            <CardDescription>Placeholder</CardDescription>
+                            <CardDescription>£{stats?.averageSteamValue || "Loading..."}</CardDescription>
                         </CardHeader>
                     </Card>
                 </div>

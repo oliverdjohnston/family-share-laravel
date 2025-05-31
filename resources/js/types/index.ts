@@ -9,6 +9,13 @@ export interface User {
     updated_at?: string;
 }
 
+// Statistics types
+export interface Stats {
+    totalGames: number;
+    totalSteamValue: string;
+    averageSteamValue: string;
+}
+
 // page props
 export interface PageProps extends Record<string, unknown> {
     auth?: {
@@ -20,6 +27,7 @@ export interface PageProps extends Record<string, unknown> {
         info?: string;
         warning?: string;
     };
+    stats?: Stats;
 }
 
 // form error types
