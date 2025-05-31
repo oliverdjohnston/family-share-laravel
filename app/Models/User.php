@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +46,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user's Steam profile.
+     */
+    public function steamProfile(): HasOne
+    {
+        return $this->hasOne(UserSteamProfile::class);
+    }
+
+    /**
+     * Get the user's Steam library entries.
+     */
+    public function steamLibrary(): HasMany
+    {
+        return $this->hasMany(SteamLibrary::class);
+    }
+
+    /**
+     * Get Steam games the user owns.
+     */
+    public function steamGames()
+    {
+        return $this->belongsToMany(SteamGame::class, 'steam_library');
     }
 }
