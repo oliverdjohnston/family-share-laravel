@@ -5,6 +5,7 @@ export interface User {
     email: string;
     email_verified_at?: string;
     avatar?: string;
+    steam_id?: string;
     created_at?: string;
     updated_at?: string;
 }

@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LinkButton } from "@/components/ui/link-button";
 import { PasswordInput } from "@/components/ui/password-input";
 import { MainLayout } from "@/layouts/main-layout";
 import { PageProps, User as UserType } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { Save, Settings, User } from "lucide-react";
+import { ExternalLink, GamepadIcon, Save, Settings, User } from "lucide-react";
 
 interface ProfilePageProps extends PageProps {
     user?: UserType;
@@ -27,9 +28,14 @@ export default function Profile({ user }: ProfilePageProps) {
         password_confirmation: "",
     });
 
+    // steam id update form
+    const steamForm = useForm({
+        steam_id: user?.steam_id || "",
+    });
+
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        profileForm.patch("/profile");
+        profileForm.patch("/profile", { preserveScroll: true });
     };
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -38,7 +44,13 @@ export default function Profile({ user }: ProfilePageProps) {
             onSuccess: () => {
                 passwordForm.reset();
             },
+            preserveScroll: true,
         });
+    };
+
+    const handleSteamSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        steamForm.patch("/profile/steam", { preserveScroll: true });
     };
 
     return (
@@ -92,6 +104,50 @@ export default function Profile({ user }: ProfilePageProps) {
                                 <Button type="submit" disabled={profileForm.processing} className="w-full sm:w-auto">
                                     <Save className="mr-2 h-4 w-4" />
                                     {profileForm.processing ? "Saving..." : "Save Profile"}
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center space-x-2">
+                                <GamepadIcon className="h-5 w-5" />
+                                <div>
+                                    <h2 className="text-xl font-semibold">Steam ID</h2>
+                                    <CardDescription>Update your Steam64 ID to sync your Steam library</CardDescription>
+                                </div>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="mb-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-950/20">
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm text-blue-800 dark:text-blue-200">Need help finding your Steam64 ID?</p>
+                                    <LinkButton href="https://steamid.io/" external={true} variant="outline" size="sm" className="ml-2">
+                                        <ExternalLink className="mr-1 h-3 w-3" />
+                                        Find Steam ID
+                                    </LinkButton>
+                                </div>
+                                <p className="mt-2 text-xs text-blue-700 dark:text-blue-300">
+                                    Your Steam64 ID should be a 17-digit number (e.g. 76561234567890123)
+                                </p>
+                            </div>
+                            <form onSubmit={handleSteamSubmit} className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="steam_id">Steam64 ID</Label>
+                                    <Input
+                                        id="steam_id"
+                                        type="text"
+                                        value={steamForm.data.steam_id}
+                                        onChange={(e) => steamForm.setData("steam_id", e.target.value)}
+                                        placeholder="76561198123456789"
+                                        maxLength={17}
+                                    />
+                                    {steamForm.errors.steam_id && <p className="text-sm text-red-600">{steamForm.errors.steam_id}</p>}
+                                </div>
+                                <Button type="submit" disabled={steamForm.processing} className="w-full sm:w-auto">
+                                    <Save className="mr-2 h-4 w-4" />
+                                    {steamForm.processing ? "Updating..." : "Update Steam ID"}
                                 </Button>
                             </form>
                         </CardContent>
