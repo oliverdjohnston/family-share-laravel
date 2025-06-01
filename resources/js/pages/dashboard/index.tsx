@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 import { Switch } from "@/components/ui/switch";
 import { MainLayout } from "@/layouts/main-layout";
 import { cn } from "@/lib/utils";
 import { DashboardData } from "@/types";
-import { CalendarIcon, GamepadIcon, TrendingUpIcon } from "lucide-react";
+import { AlertCircleIcon, CalendarIcon, GamepadIcon, TrendingUpIcon } from "lucide-react";
 import { ComparisonTableTab } from "./components/comparison-table-tab";
 import { StatCard } from "./components/dashboard-cards";
 import { OverviewTab } from "./components/overview-tab";
@@ -28,6 +29,7 @@ export default function Dashboard(dashboardData: DashboardData) {
         userFilter,
         allUsers,
         activeTab,
+        steamLicensesUploaded,
     } = dashboardData;
 
     const handleTabNavigation = (tabId: string) => {
@@ -114,6 +116,32 @@ export default function Dashboard(dashboardData: DashboardData) {
                         <span className="text-sm font-medium">CDKeys</span>
                     </div>
                 </div>
+
+                {!steamLicensesUploaded && (
+                    <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/20">
+                        <div className="flex items-start gap-3">
+                            <div className="flex-shrink-0">
+                                <AlertCircleIcon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">Steam Licenses Required for Accurate Data</h3>
+                                <div className="mt-2 text-sm text-amber-700 dark:text-amber-300">
+                                    <p>Upload your Steam licenses to see accurate purchase dates.</p>
+                                </div>
+                                <div className="mt-3">
+                                    <LinkButton
+                                        href="/profile#steam-licenses"
+                                        variant="outline"
+                                        size="sm"
+                                        className="border-amber-300 bg-amber-100 text-amber-800 hover:bg-amber-200 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-200 dark:hover:bg-amber-900/50"
+                                    >
+                                        Upload Steam Licenses
+                                    </LinkButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:mb-8 lg:grid-cols-4">
                     <StatCard title="Your Games" value={currentUserStats?.game_count || 0} description="Total games in library" icon={GamepadIcon} />

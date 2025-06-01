@@ -85,6 +85,7 @@ export interface DashboardData {
         name: string;
     }[];
     activeTab: string;
+    steamLicensesUploaded: boolean;
 }
 
 // page props

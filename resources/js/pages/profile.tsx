@@ -99,7 +99,7 @@ export default function Profile({ user }: ProfilePageProps) {
                         <h1 className="text-3xl font-bold">Profile</h1>
                     </div>
 
-                    <Card>
+                    <Card id="edit-profile">
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-3">
                                 <Avatar className="h-12 w-12">
@@ -147,7 +147,7 @@ export default function Profile({ user }: ProfilePageProps) {
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card id="steam-id">
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-2">
                                 <GamepadIcon className="h-5 w-5" />
@@ -191,7 +191,7 @@ export default function Profile({ user }: ProfilePageProps) {
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card id="steam-licenses">
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
@@ -297,7 +297,7 @@ export default function Profile({ user }: ProfilePageProps) {
                         </CardContent>
                     </Card>
 
-                    <Card>
+                    <Card id="change-password">
                         <CardHeader>
                             <CardTitle className="flex items-center space-x-2">
                                 <Settings className="h-5 w-5" />

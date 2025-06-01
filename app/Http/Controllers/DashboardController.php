@@ -87,6 +87,9 @@ class DashboardController extends Controller
         // value comparison always shows all users
         $valueComparison = $this->getValueComparison($userStats);
 
+        // check if the user has uploaded their steam licenses
+        $steamLicensesUploaded = $currentUser->steam_licenses_uploaded;
+
         return Inertia::render('dashboard/index', [
             'userStats' => $userStats,
             'currentUserStats' => $currentUserStats,
@@ -101,7 +104,8 @@ class DashboardController extends Controller
             'valueTypeLabel' => $valueType === 'cdkeys' ? 'CDKeys' : 'Steam',
             'userFilter' => $userFilter,
             'allUsers' => User::whereHas('steamLibrary')->select('id', 'name')->get(),
-            'activeTab' => $activeTab
+            'activeTab' => $activeTab,
+            'steamLicensesUploaded' => $steamLicensesUploaded
         ]);
     }
 
