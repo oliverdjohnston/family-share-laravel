@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -166,7 +165,7 @@ export default function Profile({ user }: ProfilePageProps) {
                                         Find Steam ID
                                     </LinkButton>
                                 </div>
-                                <p className="mt-2 text-center text-xs text-blue-700 sm:text-left dark:text-blue-300">
+                                <p className="mt-2 text-xs text-blue-700 dark:text-blue-300">
                                     Your Steam64 ID should be a 17 digit number (e.g. 76561234567890123)
                                 </p>
                             </div>
@@ -194,51 +193,49 @@ export default function Profile({ user }: ProfilePageProps) {
                     <Card id="steam-licenses">
                         <CardHeader>
                             <CardTitle className="flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
+                                <div className="flex w-full items-center space-x-2">
                                     <FileText className="h-5 w-5" />
-                                    <div>
-                                        <h2 className="text-xl font-semibold">Steam Licenses</h2>
-                                        <CardDescription>Upload your Steam licenses page for accurate purchase dates</CardDescription>
+                                    <div className="w-full">
+                                        <div className="flex items-center justify-between space-x-2">
+                                            <h2 className="text-xl font-semibold">Steam Licenses</h2>
+                                        </div>
+                                        <CardDescription>Upload your Steam licenses page for accurate purchase dates.</CardDescription>
                                     </div>
                                 </div>
-                                {user?.steam_licenses_uploaded && (
-                                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                                        Uploaded
-                                    </Badge>
-                                )}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="mb-4 rounded-lg bg-amber-50 p-4 dark:bg-amber-950/20">
-                                <div className="space-y-2">
-                                    <p className="text-sm text-amber-800 dark:text-amber-200">
-                                        <strong>How to get your Steam licenses file:</strong>
-                                    </p>
-                                    <ol className="list-inside list-decimal space-y-1 text-xs text-amber-700 dark:text-amber-300">
-                                        <li>Visit your Steam account licenses page</li>
-                                        <li>Press Ctrl+S to save the page</li>
-                                        <li>Save as a .html file</li>
-                                        <li>Upload the saved .html file here</li>
-                                    </ol>
-                                    <div className="mt-2">
-                                        <LinkButton
-                                            href="https://store.steampowered.com/account/licenses"
-                                            external={true}
-                                            variant="outline"
-                                            size="sm"
-                                        >
-                                            <ExternalLink className="mr-1 h-3 w-3" />
-                                            Open Steam Licenses Page
-                                        </LinkButton>
+                            {!user?.steam_licenses_uploaded && (
+                                <div className="mb-4 rounded-lg bg-amber-50 p-4 dark:bg-amber-950/20">
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-amber-800 dark:text-amber-200">
+                                            <strong>How to get your Steam licenses file:</strong>
+                                        </p>
+                                        <ol className="list-inside list-decimal space-y-1 text-xs text-amber-700 dark:text-amber-300">
+                                            <li>Visit your Steam account licenses page</li>
+                                            <li>Press Ctrl+S to save the page</li>
+                                            <li>Save as a .html file</li>
+                                            <li>Upload the saved .html file here</li>
+                                        </ol>
+                                        <div className="mt-2">
+                                            <LinkButton
+                                                href="https://store.steampowered.com/account/licenses"
+                                                external={true}
+                                                variant="outline"
+                                                size="sm"
+                                            >
+                                                <ExternalLink className="mr-1 h-3 w-3" />
+                                                Open Steam Licenses Page
+                                            </LinkButton>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            )}
                             {user?.steam_licenses_uploaded ? (
                                 <div className="space-y-4">
                                     <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950/20">
                                         <p className="text-sm text-green-800 dark:text-green-200">
-                                            Steam licenses have been uploaded and processed. Purchase dates are now accurate!
+                                            Steam licenses have been uploaded and processed. Purchase dates are now accurate.
                                         </p>
                                     </div>
                                     <Button
