@@ -18,6 +18,7 @@ export const DASHBOARD_TABS = [
     { id: "trends", label: "Trends", route: "/dashboard/trends" },
     { id: "recent", label: "Recent", route: "/dashboard/recent" },
     { id: "compare", label: "Compare", route: "/dashboard/compare" },
+    { id: "next-buyer", label: "Next Buyer", route: "/dashboard/next-buyer" },
 ] as const;
 
 export const TIME_PERIODS = [

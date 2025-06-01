@@ -64,6 +64,31 @@ export interface ValueComparison {
     games: number;
 }
 
+// Next Purchaser types
+export interface NextPurchaserUser {
+    id: number;
+    name: string;
+    recent_spending: number;
+    days_since_last_purchase: number;
+    last_purchase_date: string;
+    last_purchase_game: string | null;
+    total_library_value: number;
+    fairness_score: number;
+}
+
+export interface NextPurchaserData {
+    next_purchaser: NextPurchaserUser;
+    all_users_ranked: NextPurchaserUser[];
+    period_months: number;
+    algorithm_info: {
+        weights: {
+            spending: number;
+            time_since_last: number;
+            library_value: number;
+        };
+    };
+}
+
 export interface DashboardData {
     userStats: UserStats[];
     currentUserStats: UserStats | null;
@@ -71,6 +96,7 @@ export interface DashboardData {
     comparisonGames: ComparisonGame[];
     monthlyTrends: MonthlyTrend[];
     valueComparison: ValueComparison[];
+    nextPurchaserData: NextPurchaserData;
     currentUser: {
         id: number;
         name: string;

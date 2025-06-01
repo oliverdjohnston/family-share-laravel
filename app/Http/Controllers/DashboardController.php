@@ -56,17 +56,25 @@ class DashboardController extends Controller
     }
 
     /**
+     * Display the next buyer tab
+     */
+    public function nextBuyer(Request $request)
+    {
+        return $this->renderDashboard($request, 'next-buyer');
+    }
+
+    /**
      * Render dashboard with specified active tab
      */
     private function renderDashboard(Request $request, string $activeTab)
     {
         $currentUser = Auth::user();
-        $period = $request->get('period', '3_months');
+        $period = $request->get('period', '6_months');
         $valueType = $request->get('valueType', 'steam');
         $userFilter = $request->get('user');
 
         // check if the period and valueType are valid
-        $period = array_key_exists($period, self::PERIOD_MAP) ? $period : '3_months';
+        $period = array_key_exists($period, self::PERIOD_MAP) ? $period : '6_months';
         $valueType = in_array($valueType, ['steam', 'cdkeys']) ? $valueType : 'steam';
 
         // get all users with their steam libraries and games
@@ -87,6 +95,9 @@ class DashboardController extends Controller
         // value comparison always shows all users
         $valueComparison = $this->getValueComparison($userStats);
 
+        // get next buyer data (always use 6 months)
+        $nextBuyerData = $this->getNextBuyerData($allUsers, $valueType);
+
         // check if the user has uploaded their steam licenses
         $steamLicensesUploaded = $currentUser->steam_licenses_uploaded;
 
@@ -97,6 +108,7 @@ class DashboardController extends Controller
             'comparisonGames' => $comparisonGames,
             'monthlyTrends' => $monthlyTrends,
             'valueComparison' => $valueComparison,
+            'nextPurchaserData' => $nextBuyerData,
             'currentUser' => ['id' => $currentUser->id, 'name' => $currentUser->name],
             'selectedPeriod' => $period,
             'periodLabel' => self::PERIOD_LABELS[$period],
@@ -209,6 +221,88 @@ class DashboardController extends Controller
             'value' => round($user['total_value'], 2),
             'games' => $user['game_count'],
         ])->sortByDesc('value')->values();
+    }
+
+    /**
+     * Calculate next buyer based on spending patterns and fairness (always 6 months)
+     */
+    private function getNextBuyerData($users, $valueType)
+    {
+        $months = self::PERIOD_MAP['6_months'];
+        $cutoffDate = Carbon::now()->subMonths($months);
+
+        $userData = $users->map(function ($user) use ($cutoffDate, $valueType) {
+            // get the amount spent in the last 6 months
+            $recentSpending = $user->steamLibrary
+                ->where('acquired_at', '>=', $cutoffDate)
+                ->whereNotNull('acquired_at')
+                ->sum(function ($entry) use ($valueType) {
+                    return $this->getSafeValue($entry->steamGame, $valueType);
+                });
+
+            // get the last purchase date
+            $lastPurchase = $user->steamLibrary
+                ->whereNotNull('acquired_at')
+                ->sortByDesc('acquired_at')
+                ->first();
+
+            // calculate days since last purchase (if no purchase, set to 9999)
+            $daysSinceLastPurchase = $lastPurchase ? (int) Carbon::parse($lastPurchase->acquired_at)->diffInDays(Carbon::now()) : 9999;
+
+            // calculate the total library value (all time, not just period)
+            $totalLibraryValue = $user->steamLibrary->sum(function ($entry) use ($valueType) {
+                return $this->getSafeValue($entry->steamGame, $valueType);
+            });
+
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'recent_spending' => $recentSpending,
+                'days_since_last_purchase' => $daysSinceLastPurchase,
+                'last_purchase_date' => $lastPurchase ? Carbon::parse($lastPurchase->acquired_at)->format('M j, Y') : 'Never',
+                'last_purchase_game' => $lastPurchase ? $lastPurchase->steamGame->name : null,
+                'total_library_value' => $totalLibraryValue,
+            ];
+        });
+
+        // calculate fairness score
+        $maxSpending = $userData->max('recent_spending') ?: 1;
+        $maxDays = $userData->max('days_since_last_purchase') ?: 1;
+        $maxLibraryValue = $userData->max('total_library_value') ?: 1;
+
+        $userDataWithScores = $userData->map(function ($user) use ($maxSpending, $maxDays, $maxLibraryValue) {
+            // set the spending score based on the max spending
+            $spendingScore = $maxSpending > 0 ? $user['recent_spending'] / $maxSpending : 0;
+
+            // set the days since last purchase score based on the max days
+            $daysScore = $maxDays > 0 ? ($maxDays - $user['days_since_last_purchase']) / $maxDays : 0;
+
+            // set the library value score based on the max library value
+            $libraryValueScore = $maxLibraryValue > 0 ? $user['total_library_value'] / $maxLibraryValue : 0;
+
+            // calculate fairness score (lower means they should buy next)
+            $fairnessScore = (0.7 * $spendingScore) + (0.25 * $daysScore) + (0.05 * $libraryValueScore);
+
+            return array_merge($user, [
+                'fairness_score' => $fairnessScore,
+            ]);
+        });
+
+        // sort by fairness score (ascending - lowest should buy next)
+        $sortedUsers = $userDataWithScores->sortBy('fairness_score')->values();
+
+        return [
+            'next_purchaser' => $sortedUsers->first(),
+            'all_users_ranked' => $sortedUsers,
+            'period_months' => $months,
+            'algorithm_info' => [
+                'weights' => [
+                    'spending' => 70,
+                    'time_since_last' => 25,
+                    'library_value' => 5
+                ],
+            ]
+        ];
     }
 
     /**

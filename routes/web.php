@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/trends', [DashboardController::class, 'trends'])->name('dashboard.trends');
     Route::get('/dashboard/recent', [DashboardController::class, 'recent'])->name('dashboard.recent');
     Route::get('/dashboard/compare', [DashboardController::class, 'compare'])->name('dashboard.compare');
+    Route::get('/dashboard/next-buyer', [DashboardController::class, 'nextBuyer'])->name('dashboard.next-buyer');
 });
 
 require __DIR__.'/auth.php';
