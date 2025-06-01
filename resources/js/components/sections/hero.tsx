@@ -12,7 +12,7 @@ export function Hero({ stats }: HeroProps) {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center gap-8 text-center md:gap-16">
                 <div className="flex flex-col items-center gap-6">
-                    <h1 className="text-5xl font-bold text-pretty text-white md:text-7xl">Compare Steam Libraries</h1>
+                    <h1 className="text-5xl font-bold text-pretty md:text-7xl">Compare Steam Libraries</h1>
                     <p className="text-muted-foreground mx-auto max-w-3xl text-xl text-pretty md:text-2xl">
                         A fair way to compare the value of our libraries and determine who purchases the next game.
                     </p>
