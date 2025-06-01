@@ -4,7 +4,7 @@ import { LinkButton } from "@/components/ui/link-button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { PageProps } from "@/types";
 import { Link, router, usePage } from "@inertiajs/react";
-import { ChevronDown, Home, LogOut, Menu, Settings, User } from "lucide-react";
+import { ChevronDown, Home, LayoutDashboard, LogOut, Menu, User } from "lucide-react";
 import { useState } from "react";
 import { route } from "ziggy-js";
 
@@ -24,18 +24,16 @@ export function Navigation() {
 
     const navigationItems = [
         { routeName: "home", label: "Home", icon: Home },
-        ...(auth?.user ? [{ routeName: "dashboard", label: "Dashboard", icon: Settings }] : []),
+        ...(auth?.user ? [{ routeName: "dashboard", label: "Dashboard", icon: LayoutDashboard }] : []),
     ];
 
     return (
         <nav className="border-border bg-background border-b">
-            <div className="mx-auto max-w-7xl px-4 lg:px-8">
+            <div className="max-w-8xl container mx-auto px-4 lg:px-8">
                 <div className="flex h-14 items-center justify-between sm:h-16">
                     <div className="flex min-w-0 flex-1 items-center">
                         <Link href={route("home")} className="shrink-0 cursor-pointer p-0">
-                            <span className="text-primary hover:text-primary/80 text-base font-bold transition-colors sm:text-lg lg:text-xl">
-                                oliver is cool
-                            </span>
+                            <span className="text-primary hover:text-primary/80 text-xl font-bold transition-colors">oliver is cool</span>
                         </Link>
                     </div>
 

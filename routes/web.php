@@ -5,7 +5,6 @@ use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -18,6 +17,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/trends', [DashboardController::class, 'trends'])->name('dashboard.trends');
+    Route::get('/dashboard/recent', [DashboardController::class, 'recent'])->name('dashboard.recent');
+    Route::get('/dashboard/compare', [DashboardController::class, 'compare'])->name('dashboard.compare');
 });
 
 require __DIR__.'/auth.php';

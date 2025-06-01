@@ -17,6 +17,75 @@ export interface Stats {
     averageSteamValue: string;
 }
 
+// Dashboard related types
+export interface UserStats {
+    id: number;
+    name: string;
+    game_count: number;
+    total_value: number;
+    recent_purchases: {
+        "3_months": number;
+        "6_months": number;
+        "12_months": number;
+    };
+}
+
+export interface RecentGame {
+    game_name: string;
+    user_name: string;
+    acquired_at: string;
+    steam_value: number;
+    cdkeys_value: number;
+    selected_value: number;
+    icon_url: string | null;
+}
+
+export interface ComparisonGame {
+    id: number;
+    game_name: string;
+    user_name: string;
+    user_id: number;
+    acquired_at: string;
+    acquired_at_raw: string;
+    steam_value: number;
+    cdkeys_value: number;
+    icon_url: string | null;
+}
+
+export interface MonthlyTrend {
+    month: string;
+    games: number;
+}
+
+export interface ValueComparison {
+    user: string;
+    value: number;
+    games: number;
+}
+
+export interface DashboardData {
+    userStats: UserStats[];
+    currentUserStats: UserStats | null;
+    recentGames: RecentGame[];
+    comparisonGames: ComparisonGame[];
+    monthlyTrends: MonthlyTrend[];
+    valueComparison: ValueComparison[];
+    currentUser: {
+        id: number;
+        name: string;
+    };
+    selectedPeriod: string;
+    periodLabel: string;
+    valueType: string;
+    valueTypeLabel: string;
+    userFilter?: string | null;
+    allUsers: {
+        id: number;
+        name: string;
+    }[];
+    activeTab: string;
+}
+
 // page props
 export interface PageProps extends Record<string, unknown> {
     auth?: {

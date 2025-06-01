@@ -1,7 +1,7 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LinkButton } from "@/components/ui/link-button";
 import { Stats } from "@/types";
-import { ChartColumnStacked } from "lucide-react";
+import { LayoutDashboard, TableIcon } from "lucide-react";
 
 interface HeroProps {
     stats?: Stats;
@@ -40,8 +40,12 @@ export function Hero({ stats }: HeroProps) {
                 </div>
 
                 <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                    <LinkButton variant="default" size="3xl" className="gap-3 text-xl md:text-2xl" href="/comparison">
-                        <ChartColumnStacked className="h-8 w-8" />
+                    <LinkButton variant="default" size="2xl" className="gap-3 text-xl" href="/dashboard">
+                        <LayoutDashboard className="h-6 w-6" />
+                        View Dashboard
+                    </LinkButton>
+                    <LinkButton variant="default" size="2xl" className="gap-3 text-xl" href="/dashboard/compare">
+                        <TableIcon className="h-6 w-6" />
                         View Comparison
                     </LinkButton>
                 </div>
