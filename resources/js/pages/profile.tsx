@@ -121,15 +121,15 @@ export default function Profile({ user }: ProfilePageProps) {
                         </CardHeader>
                         <CardContent>
                             <div className="mb-4 rounded-lg bg-blue-50 p-4 dark:bg-blue-950/20">
-                                <div className="flex items-center justify-between">
+                                <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
                                     <p className="text-sm text-blue-800 dark:text-blue-200">Need help finding your Steam64 ID?</p>
-                                    <LinkButton href="https://steamid.xyz/" external={true} variant="outline" size="sm" className="ml-2">
+                                    <LinkButton href="https://steamid.xyz/" external={true} variant="outline" size="sm" className="w-full sm:w-auto">
                                         <ExternalLink className="mr-1 h-3 w-3" />
                                         Find Steam ID
                                     </LinkButton>
                                 </div>
-                                <p className="mt-2 text-xs text-blue-700 dark:text-blue-300">
-                                    Your Steam64 ID should be a 17-digit number (e.g. 76561234567890123)
+                                <p className="mt-2 text-center text-xs text-blue-700 sm:text-left dark:text-blue-300">
+                                    Your Steam64 ID should be a 17 digit number (e.g. 76561234567890123)
                                 </p>
                             </div>
                             <form onSubmit={handleSteamSubmit} className="space-y-4">
