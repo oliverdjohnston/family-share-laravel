@@ -44,14 +44,17 @@ class SteamService
                     ]
                 );
 
-                // only create if it doesn't exist
+                // for new games, set acquired_at to now if user has uploaded licenses
+                $defaultAcquiredAt = $user->steam_licenses_uploaded ? now() : null;
+
+                // only create if it doesn't exist (if the user has uploaded licenses, we don't want to overwrite the existing data)
                 SteamLibrary::firstOrCreate(
                     [
                         'user_id' => $user->id,
                         'steam_game_id' => $steamGame->id,
                     ],
                     [
-                        'acquired_at' => null,
+                        'acquired_at' => $defaultAcquiredAt,
                     ]
                 );
             }

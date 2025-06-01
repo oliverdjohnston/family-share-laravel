@@ -18,8 +18,6 @@ class SyncAllData extends Command
 
             Artisan::call('steam:sync-libraries');
 
-            Artisan::call('steam:update-purchase-dates');
-
             Artisan::call('steam:update-prices');
 
             Artisan::call('cdkeys:update-prices');

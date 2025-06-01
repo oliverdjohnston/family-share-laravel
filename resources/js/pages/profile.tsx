@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,8 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { MainLayout } from "@/layouts/main-layout";
 import { PageProps, User as UserType } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { ExternalLink, GamepadIcon, Save, Settings, User } from "lucide-react";
+import { ExternalLink, FileText, GamepadIcon, Save, Settings, Trash2, Upload, User } from "lucide-react";
+import { useRef } from "react";
 
 interface ProfilePageProps extends PageProps {
     user?: UserType;
@@ -33,6 +35,16 @@ export default function Profile({ user }: ProfilePageProps) {
         steam_id: user?.steam_id || "",
     });
 
+    // steam licenses upload form
+    const licensesForm = useForm({
+        licenses_file: null as File | null,
+    });
+
+    // steam licenses remove form
+    const removeLicensesForm = useForm({});
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         profileForm.patch("/profile", { preserveScroll: true });
@@ -51,6 +63,32 @@ export default function Profile({ user }: ProfilePageProps) {
     const handleSteamSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         steamForm.patch("/profile/steam", { preserveScroll: true });
+    };
+
+    const handleLicensesUpload = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!licensesForm.data.licenses_file) return;
+
+        licensesForm.post("/profile/steam-licenses", {
+            onSuccess: () => {
+                licensesForm.reset();
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+            },
+            preserveScroll: true,
+        });
+    };
+
+    const handleRemoveLicenses = () => {
+        removeLicensesForm.delete("/profile/steam-licenses", {
+            preserveScroll: true,
+        });
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        licensesForm.setData("licenses_file", file);
     };
 
     return (
@@ -150,6 +188,112 @@ export default function Profile({ user }: ProfilePageProps) {
                                     {steamForm.processing ? "Updating..." : "Update Steam ID"}
                                 </Button>
                             </form>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                    <FileText className="h-5 w-5" />
+                                    <div>
+                                        <h2 className="text-xl font-semibold">Steam Licenses</h2>
+                                        <CardDescription>Upload your Steam licenses page for accurate purchase dates</CardDescription>
+                                    </div>
+                                </div>
+                                {user?.steam_licenses_uploaded && (
+                                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                                        Uploaded
+                                    </Badge>
+                                )}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="mb-4 rounded-lg bg-amber-50 p-4 dark:bg-amber-950/20">
+                                <div className="space-y-2">
+                                    <p className="text-sm text-amber-800 dark:text-amber-200">
+                                        <strong>How to get your Steam licenses file:</strong>
+                                    </p>
+                                    <ol className="list-inside list-decimal space-y-1 text-xs text-amber-700 dark:text-amber-300">
+                                        <li>Visit your Steam account licenses page</li>
+                                        <li>Press Ctrl+S to save the page</li>
+                                        <li>Save as a .html file</li>
+                                        <li>Upload the saved .html file here</li>
+                                    </ol>
+                                    <div className="mt-2">
+                                        <LinkButton
+                                            href="https://store.steampowered.com/account/licenses"
+                                            external={true}
+                                            variant="outline"
+                                            size="sm"
+                                        >
+                                            <ExternalLink className="mr-1 h-3 w-3" />
+                                            Open Steam Licenses Page
+                                        </LinkButton>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {user?.steam_licenses_uploaded ? (
+                                <div className="space-y-4">
+                                    <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950/20">
+                                        <p className="text-sm text-green-800 dark:text-green-200">
+                                            Steam licenses have been uploaded and processed. Purchase dates are now accurate!
+                                        </p>
+                                    </div>
+                                    <Button
+                                        onClick={handleRemoveLicenses}
+                                        disabled={removeLicensesForm.processing}
+                                        variant="destructive"
+                                        className="w-full sm:w-auto"
+                                    >
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        {removeLicensesForm.processing ? "Removing..." : "Remove Licenses Data"}
+                                    </Button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleLicensesUpload} className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="licenses_file">Steam Licenses HTML File</Label>
+                                        <div className="flex items-center space-x-3">
+                                            <div className="flex-1">
+                                                <Input
+                                                    ref={fileInputRef}
+                                                    id="licenses_file"
+                                                    type="file"
+                                                    accept=".html,.htm"
+                                                    onChange={handleFileChange}
+                                                    required
+                                                    className="hidden"
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() => fileInputRef.current?.click()}
+                                                    className="w-full justify-start"
+                                                >
+                                                    <Upload className="mr-2 h-4 w-4" />
+                                                    {licensesForm.data.licenses_file?.name || "Choose HTML file..."}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        {licensesForm.errors.licenses_file && (
+                                            <p className="text-sm text-red-600">{licensesForm.errors.licenses_file}</p>
+                                        )}
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                                            Upload the HTML file you saved from your Steam licenses page (max 10MB)
+                                        </p>
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        disabled={licensesForm.processing || !licensesForm.data.licenses_file}
+                                        className="w-full sm:w-auto"
+                                    >
+                                        <Upload className="mr-2 h-4 w-4" />
+                                        {licensesForm.processing ? "Uploading..." : "Upload & Process"}
+                                    </Button>
+                                </form>
+                            )}
                         </CardContent>
                     </Card>
 

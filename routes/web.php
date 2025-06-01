@@ -4,6 +4,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SteamLicenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -13,6 +14,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/steam', [ProfileController::class, 'updateSteam'])->name('profile.steam.update');
     Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+    Route::post('/profile/steam-licenses', [SteamLicenseController::class, 'upload'])->name('profile.steam-licenses.upload');
+    Route::delete('/profile/steam-licenses', [SteamLicenseController::class, 'remove'])->name('profile.steam-licenses.remove');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

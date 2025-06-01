@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'steam_id',
+        'steam_licenses_uploaded',
         'password',
     ];
 
@@ -45,6 +46,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'steam_licenses_uploaded' => 'boolean',
         ];
     }
 
@@ -54,6 +56,14 @@ class User extends Authenticatable
     public function steamLibrary(): HasMany
     {
         return $this->hasMany(SteamLibrary::class);
+    }
+
+    /**
+     * Alias for steamLibrary for better naming in some contexts
+     */
+    public function steamLibraryEntries(): HasMany
+    {
+        return $this->steamLibrary();
     }
 
     /**
