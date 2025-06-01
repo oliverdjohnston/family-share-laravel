@@ -52,3 +52,5 @@ jobs:
             cd /var/www/html/family-share-laravel
             php artisan migrate --force
             php artisan optimize
+
+            sudo supervisorctl restart laravel-worker:*
