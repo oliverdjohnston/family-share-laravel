@@ -53,4 +53,4 @@ jobs:
             php artisan migrate --force
             php artisan optimize
 
-            sudo supervisorctl restart laravel-worker:*
+            php artisan queue:restart
