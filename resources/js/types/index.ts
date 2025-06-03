@@ -48,6 +48,7 @@ export interface ComparisonGame {
     user_id: number;
     acquired_at: string;
     acquired_at_raw: string;
+    appid: string;
     steam_value: number;
     cdkeys_value: number;
     icon_url: string | null;

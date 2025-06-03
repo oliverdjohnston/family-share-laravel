@@ -89,7 +89,7 @@ class DashboardController extends Controller
         // get period data
         $months = self::PERIOD_MAP[$period];
         $recentGames = $this->getRecentGames($months, $valueType);
-        $comparisonGames = $this->getComparisonGames( $userFilter);
+        $comparisonGames = $this->getComparisonGames($userFilter);
         $monthlyTrends = $this->getMonthlyTrends();
 
         // value comparison always shows all users
@@ -187,6 +187,7 @@ class DashboardController extends Controller
                 'user_name' => $entry->user->name,
                 'user_id' => $entry->user->id,
                 'acquired_at' => $entry->acquired_at?->format('M j, Y') ?? 'Unknown',
+                'appid' => $entry->steamGame->appid,
                 'steam_value' => $this->getSafeValue($entry->steamGame, 'steam'),
                 'cdkeys_value' => $this->getSafeValue($entry->steamGame, 'cdkeys'),
                 'icon_url' => $entry->steamGame->icon_url,

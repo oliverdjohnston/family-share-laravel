@@ -61,6 +61,7 @@ export const ComparisonTableTab = ({ comparisonGames, allUsers, userFilter, onUs
                             <TableHead>Game</TableHead>
                             <TableHead>User</TableHead>
                             <TableHead>Purchase Date</TableHead>
+                            <TableHead>App ID</TableHead>
                             <TableHead className="text-right">Steam Value</TableHead>
                             <TableHead className="text-right">CDKeys Value</TableHead>
                         </TableRow>
@@ -84,6 +85,7 @@ export const ComparisonTableTab = ({ comparisonGames, allUsers, userFilter, onUs
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="text-muted-foreground text-sm">{game.acquired_at}</TableCell>
+                                <TableCell className="text-muted-foreground text-sm">{game.appid}</TableCell>
                                 <TableCell className="text-right">{formatCurrency(game.steam_value)}</TableCell>
                                 <TableCell className="text-right">{formatCurrency(game.cdkeys_value)}</TableCell>
                             </TableRow>
