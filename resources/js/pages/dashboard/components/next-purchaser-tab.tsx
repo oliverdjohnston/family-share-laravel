@@ -29,7 +29,7 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div className="flex items-center gap-3 rounded-lg bg-white/50 p-3 dark:bg-black/20">
                             <PoundSterlingIcon className="h-5 w-5 text-green-600" />
                             <div>
@@ -44,13 +44,6 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                 <p className="text-lg font-bold">
                                     {next_purchaser.days_since_last_purchase === 9999 ? "Never" : `${next_purchaser.days_since_last_purchase}d ago`}
                                 </p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3 rounded-lg bg-white/50 p-3 dark:bg-black/20">
-                            <PoundSterlingIcon className="h-5 w-5 text-purple-600" />
-                            <div>
-                                <p className="text-sm font-medium">Total Library Value</p>
-                                <p className="text-lg font-bold">{formatCurrency(next_purchaser.total_library_value)}</p>
                             </div>
                         </div>
                     </div>
@@ -97,9 +90,7 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                     </div>
                                     <div>
                                         <p className="font-medium">{user.name}</p>
-                                        <p className="text-muted-foreground text-xs">
-                                            {formatCurrency(user.recent_spending)} • {formatCurrency(user.total_library_value)} total
-                                        </p>
+                                        <p className="text-muted-foreground text-xs">{formatCurrency(user.recent_spending)}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -133,10 +124,6 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                     <span className="text-sm">Time since last purchase</span>
                                     <Badge variant="outline">{algorithm_info.weights.time_since_last}%</Badge>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm">Total library value</span>
-                                    <Badge variant="outline">{algorithm_info.weights.library_value}%</Badge>
-                                </div>
                             </div>
                         </div>
 
@@ -150,10 +137,6 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                 <div className="flex items-start gap-2">
                                     <TrendingDownIcon className="mt-0.5 h-3 w-3 text-green-500" />
                                     <span>Longer since last purchase = more likely to be next</span>
-                                </div>
-                                <div className="flex items-start gap-2">
-                                    <PoundSterlingIcon className="mt-0.5 h-3 w-3 text-purple-500" />
-                                    <span>Higher total library value = slightly less likely to be next</span>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +181,6 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                         <Badge variant={index === 0 ? "default" : "outline"}>{(user.fairness_score * 100).toFixed(1)}%</Badge>
                                     </TableCell>
                                     <TableCell className="text-right">{formatCurrency(user.recent_spending)}</TableCell>
-                                    <TableCell className="text-right">{formatCurrency(user.total_library_value)}</TableCell>
                                     <TableCell className="text-right">
                                         {user.days_since_last_purchase === 9999 ? "Never" : `${user.days_since_last_purchase}d`}
                                     </TableCell>

@@ -268,20 +268,16 @@ class DashboardController extends Controller
         // calculate fairness score
         $maxSpending = $userData->max('recent_spending') ?: 1;
         $maxDays = $userData->max('days_since_last_purchase') ?: 1;
-        $maxLibraryValue = $userData->max('total_library_value') ?: 1;
 
-        $userDataWithScores = $userData->map(function ($user) use ($maxSpending, $maxDays, $maxLibraryValue) {
+        $userDataWithScores = $userData->map(function ($user) use ($maxSpending, $maxDays) {
             // set the spending score based on the max spending
             $spendingScore = $maxSpending > 0 ? $user['recent_spending'] / $maxSpending : 0;
 
-            // set the days since last purchase score based on the max days
+        // set the days since last purchase score based on the max days
             $daysScore = $maxDays > 0 ? ($maxDays - $user['days_since_last_purchase']) / $maxDays : 0;
 
-            // set the library value score based on the max library value
-            $libraryValueScore = $maxLibraryValue > 0 ? $user['total_library_value'] / $maxLibraryValue : 0;
-
             // calculate fairness score (lower means they should buy next)
-            $fairnessScore = (0.7 * $spendingScore) + (0.25 * $daysScore) + (0.05 * $libraryValueScore);
+            $fairnessScore = (0.7 * $spendingScore) + (0.30 * $daysScore);
 
             return array_merge($user, [
                 'fairness_score' => $fairnessScore,
@@ -298,8 +294,7 @@ class DashboardController extends Controller
             'algorithm_info' => [
                 'weights' => [
                     'spending' => 70,
-                    'time_since_last' => 25,
-                    'library_value' => 5
+                    'time_since_last' => 30,
                 ],
             ]
         ];
