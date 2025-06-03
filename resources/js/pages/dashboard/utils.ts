@@ -1,4 +1,5 @@
 import { router } from "@inertiajs/react";
+import { toast } from "sonner";
 
 // Utility functions for dashboard
 
@@ -45,4 +46,9 @@ export const truncateText = (text: string, maxLength: number = 20): string => {
  */
 export const navigateDashboard = (route: string, params: Record<string, string | undefined> = {}) => {
     router.get(route, params, { preserveState: true, preserveScroll: true });
+};
+
+export const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard");
 };

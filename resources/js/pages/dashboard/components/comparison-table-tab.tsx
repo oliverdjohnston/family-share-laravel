@@ -4,8 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ComparisonGame } from "@/types";
 import { Filter, GamepadIcon, TableIcon } from "lucide-react";
-import { toast } from "sonner";
-import { formatCurrency } from "../utils";
+import { copyToClipboard, formatCurrency } from "../utils";
 
 interface ComparisonTableTabProps {
     comparisonGames: ComparisonGame[];
@@ -13,11 +12,6 @@ interface ComparisonTableTabProps {
     userFilter: string | null | undefined;
     onUserFilter: (userId: number | null) => void;
 }
-
-const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
-};
 
 export const ComparisonTableTab = ({ comparisonGames, allUsers, userFilter, onUserFilter }: ComparisonTableTabProps) => {
     const currentUserFilter = userFilter ? parseInt(userFilter) : null;
