@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ComparisonGame } from "@/types";
 import { Filter, GamepadIcon, TableIcon } from "lucide-react";
+import { toast } from "sonner";
 import { formatCurrency } from "../utils";
 
 interface ComparisonTableTabProps {
@@ -12,6 +13,11 @@ interface ComparisonTableTabProps {
     userFilter: string | null | undefined;
     onUserFilter: (userId: number | null) => void;
 }
+
+const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard");
+};
 
 export const ComparisonTableTab = ({ comparisonGames, allUsers, userFilter, onUserFilter }: ComparisonTableTabProps) => {
     const currentUserFilter = userFilter ? parseInt(userFilter) : null;
@@ -85,7 +91,11 @@ export const ComparisonTableTab = ({ comparisonGames, allUsers, userFilter, onUs
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="text-muted-foreground text-sm">{game.acquired_at}</TableCell>
-                                <TableCell className="text-muted-foreground text-sm">{game.appid}</TableCell>
+                                <TableCell className="text-muted-foreground text-sm">
+                                    <Button variant="link" size="sm" className="p-0" onClick={() => copyToClipboard(game.appid)}>
+                                        {game.appid}
+                                    </Button>
+                                </TableCell>
                                 <TableCell className="text-right">{formatCurrency(game.steam_value)}</TableCell>
                                 <TableCell className="text-right">{formatCurrency(game.cdkeys_value)}</TableCell>
                             </TableRow>
