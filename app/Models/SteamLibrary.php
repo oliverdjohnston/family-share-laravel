@@ -32,6 +32,6 @@ class SteamLibrary extends Model
      */
     public function steamGame(): BelongsTo
     {
-        return $this->belongsTo(SteamGame::class);
+        return $this->belongsTo(SteamGame::class)->where('family_sharing_support', true);
     }
 }

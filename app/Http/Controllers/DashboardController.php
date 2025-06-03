@@ -152,6 +152,9 @@ class DashboardController extends Controller
     private function getRecentGames($months, $valueType)
     {
         return SteamLibrary::with(['steamGame', 'user'])
+            ->whereHas('steamGame', function ($query) {
+                $query->where('family_sharing_support', true);
+            })
             ->where('acquired_at', '>=', Carbon::now()->subMonths($months))
             ->whereNotNull('acquired_at')
             ->orderBy('acquired_at', 'desc')
@@ -173,7 +176,11 @@ class DashboardController extends Controller
     private function getComparisonGames($userFilter = null)
     {
         // get all steam libraries with their steam games and users
-        $query = SteamLibrary::with(['steamGame', 'user'])->orderBy('acquired_at', 'desc');
+        $query = SteamLibrary::with(['steamGame', 'user'])
+            ->whereHas('steamGame', function ($query) {
+                $query->where('family_sharing_support', true);
+            })
+            ->orderBy('acquired_at', 'desc');
 
         // if a user filter is provided, filter the query by the user id
         if ($userFilter) {
@@ -206,7 +213,12 @@ class DashboardController extends Controller
 
             return [
                 'month' => $date->format('M Y'),
-                'games' => SteamLibrary::whereYear('acquired_at', $date->year)->whereMonth('acquired_at', $date->month)->count(),
+                'games' => SteamLibrary::whereHas('steamGame', function ($query) {
+                    $query->where('family_sharing_support', true);
+                })
+                ->whereYear('acquired_at', $date->year)
+                ->whereMonth('acquired_at', $date->month)
+                ->count(),
             ];
         });
     }

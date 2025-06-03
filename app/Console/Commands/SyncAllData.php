@@ -22,6 +22,8 @@ class SyncAllData extends Command
 
             Artisan::call('cdkeys:update-prices');
 
+            Artisan::call('steam:update-family-sharing');
+
             Log::info('Complete data sync finished');
 
             return self::SUCCESS;

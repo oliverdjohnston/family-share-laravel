@@ -13,6 +13,7 @@ class SteamGame extends Model
         'img_icon_url',
         'steam_value',
         'cdkeys_value',
+        'family_sharing_support',
     ];
 
     protected $casts = [

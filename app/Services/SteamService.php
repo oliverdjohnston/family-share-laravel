@@ -147,36 +147,45 @@ class SteamService
     }
 
     /**
-     * Get games owned by multiple users (for comparison)
+     * Update family sharing support status for a game
      */
-    public function getSharedGames(array $userIds): array
+    public function updateFamilySharingSupport(SteamGame $game): bool
     {
-        return SteamGame::whereHas('libraryEntries', function ($query) use ($userIds) {
-            $query->whereIn('user_id', $userIds);
-        })
-        ->withCount(['libraryEntries' => function ($query) use ($userIds) {
-            $query->whereIn('user_id', $userIds);
-        }])
-        ->having('library_entries_count', '>', 1)
-        ->get()
-        ->toArray();
-    }
+        try {
+            // if the game already supports family sharing, don't update it
+            if ($game->family_sharing_support === true) {
+                return false;
+            }
 
-    /**
-     * Get unique games for a user (games that others don't have)
-     */
-    public function getUniqueGames(User $user, array $compareWithUserIds = []): array
-    {
-        $query = SteamGame::whereHas('libraryEntries', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        });
+            $appDetails = $this->steamApi->getAppDetails($game->appid);
 
-        if (!empty($compareWithUserIds)) {
-            $query->whereDoesntHave('libraryEntries', function ($q) use ($compareWithUserIds) {
-                $q->whereIn('user_id', $compareWithUserIds);
-            });
+            // if the app details are not found, return false
+            if (!$appDetails || !isset($appDetails['success']) || !$appDetails['success']) {
+                return false;
+            }
+
+            // if the app details are found, get the data
+            $data = $appDetails['data'];
+
+            // check if the game supports family sharing (category ID 62)
+            $supportsFamilySharing = false;
+
+            if (isset($data['categories']) && is_array($data['categories'])) {
+                foreach ($data['categories'] as $category) {
+                    if (isset($category['id']) && $category['id'] === 62) {
+                        $supportsFamilySharing = true;
+                        break;
+                    }
+                }
+            }
+
+            // update the family sharing support status
+            $game->update(['family_sharing_support' => $supportsFamilySharing]);
+            return true;
+
+        } catch (\Exception $e) {
+            Log::error('Failed to update family sharing support', ['game_id' => $game->id, 'error' => $e->getMessage()]);
+            return false;
         }
-
-        return $query->get()->toArray();
     }
 }

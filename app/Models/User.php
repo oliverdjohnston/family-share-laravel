@@ -55,7 +55,10 @@ class User extends Authenticatable
      */
     public function steamLibrary(): HasMany
     {
-        return $this->hasMany(SteamLibrary::class);
+        return $this->hasMany(SteamLibrary::class)
+            ->whereHas('steamGame', function ($query) {
+                $query->where('family_sharing_support', true);
+            });
     }
 
     /**
