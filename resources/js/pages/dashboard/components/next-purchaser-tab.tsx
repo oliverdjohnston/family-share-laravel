@@ -157,7 +157,6 @@ export const NextPurchaserTab = ({ nextPurchaserData, valueTypeLabel }: NextPurc
                                 <TableHead>User</TableHead>
                                 <TableHead className="text-right">Fairness Score</TableHead>
                                 <TableHead className="text-right">Recent Spending</TableHead>
-                                <TableHead className="text-right">Total Library Value</TableHead>
                                 <TableHead className="text-right">Days Since Last</TableHead>
                                 <TableHead>Last Game</TableHead>
                             </TableRow>
