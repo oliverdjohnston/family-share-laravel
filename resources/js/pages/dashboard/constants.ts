@@ -6,7 +6,7 @@ export const CHART_COLORS = [
     "oklch(0.709 0.1592 293.5412)",
     "oklch(0.8369 0.1644 84.4286)",
     "oklch(0.7845 0.1325 181.912)",
-    "oklch(0.8348 0.1302 160.908)",
+    "oklch(0.7 0.1702 20.12)",
 ];
 
 export const CHART_CONFIG = {
