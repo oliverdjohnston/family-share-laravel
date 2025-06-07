@@ -67,51 +67,6 @@ class SteamService
     }
 
     /**
-     * Update purchase date for a game based on first achievement
-     */
-    public function updateGamePurchaseDate(User $user, SteamGame $game): bool
-    {
-        try {
-            if (!$user->steam_id) {
-                return false;
-            }
-
-            $achievementsData = $this->steamApi->getPlayerAchievements($user->steam_id, (int)$game->appid);
-
-            if (!$achievementsData || !isset($achievementsData['playerstats']['achievements'])) {
-                return false;
-            }
-
-            $earliestTime = null;
-
-            // get the earliest achievement unlock time
-            foreach ($achievementsData['playerstats']['achievements'] as $achievement) {
-                if ($achievement['achieved'] == 1 && isset($achievement['unlocktime']) && $achievement['unlocktime'] > 0) {
-                    if ($earliestTime === null || $achievement['unlocktime'] < $earliestTime) {
-                        $earliestTime = $achievement['unlocktime'];
-                    }
-                }
-            }
-
-            // if we have an earliest time, update the purchase date. (this is an estimate of the purchase date as Steam doesn't provide this information)
-            if ($earliestTime) {
-                $purchaseDate = Carbon::createFromTimestamp($earliestTime);
-
-                SteamLibrary::where('user_id', $user->id)
-                    ->where('steam_game_id', $game->id)
-                    ->update(['acquired_at' => $purchaseDate]);
-
-                return true;
-            }
-
-            return false;
-        } catch (\Exception $e) {
-            Log::error('Failed to update game purchase date', ['user_id' => $user->id, 'game_id' => $game->id, 'error' => $e->getMessage()]);
-            return false;
-        }
-    }
-
-    /**
      * Update game price from Steam Store (excluding free games)
      */
     public function updateGamePrice(SteamGame $game): bool
