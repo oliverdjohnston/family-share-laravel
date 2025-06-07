@@ -24,21 +24,7 @@ export interface UserStats {
     name: string;
     game_count: number;
     total_value: number;
-    recent_purchases: {
-        "3_months": number;
-        "6_months": number;
-        "12_months": number;
-    };
-}
-
-export interface RecentGame {
-    game_name: string;
-    user_name: string;
-    acquired_at: string;
-    steam_value: number;
-    cdkeys_value: number;
-    selected_value: number;
-    icon_url: string | null;
+    recent_purchases_6_months: number;
 }
 
 export interface ComparisonGame {
@@ -93,7 +79,6 @@ export interface NextPurchaserData {
 export interface DashboardData {
     userStats: UserStats[];
     currentUserStats: UserStats | null;
-    recentGames: RecentGame[];
     comparisonGames: ComparisonGame[];
     monthlyTrends: MonthlyTrend[];
     valueComparison: ValueComparison[];
@@ -102,8 +87,6 @@ export interface DashboardData {
         id: number;
         name: string;
     };
-    selectedPeriod: string;
-    periodLabel: string;
     valueType: string;
     valueTypeLabel: string;
     userFilter?: string | null;

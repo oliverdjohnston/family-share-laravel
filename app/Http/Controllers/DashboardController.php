@@ -11,17 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    private const PERIOD_MAP = [
-        '3_months' => 3,
-        '6_months' => 6,
-        '12_months' => 12
-    ];
 
-    private const PERIOD_LABELS = [
-        '3_months' => 'Last 3 Months',
-        '6_months' => 'Last 6 Months',
-        '12_months' => 'Last 12 Months'
-    ];
 
     /**
      * Display the dashboard overview (main page)
@@ -39,13 +29,7 @@ class DashboardController extends Controller
         return $this->renderDashboard($request, 'trends');
     }
 
-    /**
-     * Display the recent games tab
-     */
-    public function recent(Request $request)
-    {
-        return $this->renderDashboard($request, 'recent');
-    }
+
 
     /**
      * Display the comparison tab
@@ -69,12 +53,10 @@ class DashboardController extends Controller
     private function renderDashboard(Request $request, string $activeTab)
     {
         $currentUser = Auth::user();
-        $period = $request->get('period', '6_months');
         $valueType = $request->get('valueType', 'steam');
         $userFilter = $request->get('user');
 
-        // check if the period and valueType are valid
-        $period = array_key_exists($period, self::PERIOD_MAP) ? $period : '6_months';
+        // check if valueType is valid
         $valueType = in_array($valueType, ['steam', 'cdkeys']) ? $valueType : 'steam';
 
         // get all users with their steam libraries and games
@@ -86,9 +68,7 @@ class DashboardController extends Controller
         // find current users stats
         $currentUserStats = $userStats->firstWhere('id', $currentUser->id);
 
-        // get period data
-        $months = self::PERIOD_MAP[$period];
-        $recentGames = $this->getRecentGames($months, $valueType);
+        // get comparison data
         $comparisonGames = $this->getComparisonGames($userFilter);
         $monthlyTrends = $this->getMonthlyTrends();
 
@@ -104,14 +84,11 @@ class DashboardController extends Controller
         return Inertia::render('dashboard/index', [
             'userStats' => $userStats,
             'currentUserStats' => $currentUserStats,
-            'recentGames' => $recentGames,
             'comparisonGames' => $comparisonGames,
             'monthlyTrends' => $monthlyTrends,
             'valueComparison' => $valueComparison,
             'nextPurchaserData' => $nextBuyerData,
             'currentUser' => ['id' => $currentUser->id, 'name' => $currentUser->name],
-            'selectedPeriod' => $period,
-            'periodLabel' => self::PERIOD_LABELS[$period],
             'valueType' => $valueType,
             'valueTypeLabel' => $valueType === 'cdkeys' ? 'CDKeys' : 'Steam',
             'userFilter' => $userFilter,
@@ -137,38 +114,12 @@ class DashboardController extends Controller
                 'name' => $user->name,
                 'game_count' => $user->steamLibrary->count(),
                 'total_value' => $totalValue,
-                'recent_purchases' => [
-                    '3_months' => $user->steamLibrary->where('acquired_at', '>=', Carbon::now()->subMonths(3))->count(),
-                    '6_months' => $user->steamLibrary->where('acquired_at', '>=', Carbon::now()->subMonths(6))->count(),
-                    '12_months' => $user->steamLibrary->where('acquired_at', '>=', Carbon::now()->subMonths(12))->count(),
-                ]
+                'recent_purchases_6_months' => $user->steamLibrary->where('acquired_at', '>=', Carbon::now()->subMonths(6))->count(),
             ];
         });
     }
 
-    /**
-     * Get recent games (not filtered by user)
-     */
-    private function getRecentGames($months, $valueType)
-    {
-        return SteamLibrary::with(['steamGame', 'user'])
-            ->whereHas('steamGame', function ($query) {
-                $query->where('family_sharing_support', true);
-            })
-            ->where('acquired_at', '>=', Carbon::now()->subMonths($months))
-            ->whereNotNull('acquired_at')
-            ->orderBy('acquired_at', 'desc')
-            ->get()
-            ->map(function ($entry) use ($valueType) {
-                return [
-                    'game_name' => $entry->steamGame->name,
-                    'user_name' => $entry->user->name,
-                    'acquired_at' => $entry->acquired_at->format('M j, Y'),
-                    'selected_value' => $this->getSafeValue($entry->steamGame, $valueType),
-                    'icon_url' => $entry->steamGame->icon_url,
-                ];
-            });
-    }
+
 
     /**
      * Get comparison games data with optional user filtering
@@ -241,7 +192,7 @@ class DashboardController extends Controller
      */
     private function getNextBuyerData($users, $valueType)
     {
-        $months = self::PERIOD_MAP['6_months'];
+        $months = 6;
         $cutoffDate = Carbon::now()->subMonths($months);
 
         $userData = $users->map(function ($user) use ($cutoffDate, $valueType) {

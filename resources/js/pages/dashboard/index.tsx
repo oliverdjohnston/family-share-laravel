@@ -9,7 +9,6 @@ import { ComparisonTableTab } from "./components/comparison-table-tab";
 import { StatCard } from "./components/dashboard-cards";
 import { NextPurchaserTab } from "./components/next-purchaser-tab";
 import { OverviewTab } from "./components/overview-tab";
-import { RecentGamesTab } from "./components/recent-games-tab";
 import { TrendsTab } from "./components/trends-tab";
 import { DASHBOARD_TABS } from "./constants";
 import { formatCurrency, navigateDashboard } from "./utils";
@@ -18,14 +17,11 @@ export default function Dashboard(dashboardData: DashboardData) {
     const {
         userStats,
         currentUserStats,
-        recentGames,
         comparisonGames,
         monthlyTrends,
         valueComparison,
         nextPurchaserData,
         currentUser,
-        selectedPeriod,
-        periodLabel,
         valueType,
         valueTypeLabel,
         userFilter,
@@ -38,28 +34,16 @@ export default function Dashboard(dashboardData: DashboardData) {
         const tab = DASHBOARD_TABS.find((t) => t.id === tabId);
         if (tab) {
             navigateDashboard(tab.route, {
-                period: selectedPeriod,
                 valueType,
                 user: userFilter || undefined,
             });
         }
     };
 
-    const handlePeriodChange = (period: string) => {
-        const currentTab = DASHBOARD_TABS.find((t) => t.id === activeTab);
-        const route = currentTab?.route || "/dashboard";
-        navigateDashboard(route, {
-            period,
-            valueType,
-            user: userFilter || undefined,
-        });
-    };
-
     const handleValueTypeChange = (newValueType: string) => {
         const currentTab = DASHBOARD_TABS.find((t) => t.id === activeTab);
         const route = currentTab?.route || "/dashboard";
         navigateDashboard(route, {
-            period: selectedPeriod,
             valueType: newValueType,
             user: userFilter || undefined,
         });
@@ -69,7 +53,6 @@ export default function Dashboard(dashboardData: DashboardData) {
         const currentTab = DASHBOARD_TABS.find((t) => t.id === activeTab);
         const route = currentTab?.route || "/dashboard";
         navigateDashboard(route, {
-            period: selectedPeriod,
             valueType,
             user: userId ? userId.toString() : undefined,
         });
@@ -81,15 +64,7 @@ export default function Dashboard(dashboardData: DashboardData) {
                 return <OverviewTab valueComparison={valueComparison} monthlyTrends={monthlyTrends} valueTypeLabel={valueTypeLabel} />;
             case "trends":
                 return <TrendsTab userStats={userStats} valueTypeLabel={valueTypeLabel} />;
-            case "recent":
-                return (
-                    <RecentGamesTab
-                        recentGames={recentGames}
-                        selectedPeriod={selectedPeriod}
-                        periodLabel={periodLabel}
-                        onPeriodChange={handlePeriodChange}
-                    />
-                );
+
             case "compare":
                 return (
                     <ComparisonTableTab
@@ -157,8 +132,8 @@ export default function Dashboard(dashboardData: DashboardData) {
                     />
                     <StatCard
                         title="Recent Purchases"
-                        value={currentUserStats?.recent_purchases["3_months"] || 0}
-                        description="Games in last 3 months"
+                        value={currentUserStats?.recent_purchases_6_months || 0}
+                        description="Games in last 6 months"
                         icon={CalendarIcon}
                     />
                     <StatCard
@@ -169,7 +144,7 @@ export default function Dashboard(dashboardData: DashboardData) {
                     />
                 </div>
 
-                <div className="bg-muted mb-4 grid h-auto w-full grid-cols-2 gap-1 rounded-md p-1 sm:mb-6 sm:grid-cols-5">
+                <div className="bg-muted mb-4 grid h-auto w-full grid-cols-2 gap-1 rounded-md p-1 sm:mb-6 sm:grid-cols-4">
                     {DASHBOARD_TABS.map((tab) => (
                         <Button
                             key={tab.id}

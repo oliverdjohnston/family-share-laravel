@@ -88,4 +88,31 @@ class SteamApiService
             return null;
         }
     }
+
+    /**
+     * Search for games on Steam Store
+     */
+    public function getStoreSearch(string $query): ?array
+    {
+        $url = "{$this->storeUrl}/api/storesearch";
+
+        $params = [
+            'term' => $query,
+            'cc' => 'GB',
+        ];
+
+        try {
+            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            Log::error('Steam Store API getStoreSearch failed');
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Steam Store API getStoreSearch exception: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

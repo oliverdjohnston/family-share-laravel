@@ -17,13 +17,6 @@ export const CHART_CONFIG = {
 export const DASHBOARD_TABS = [
     { id: "overview", label: "Overview", route: "/dashboard" },
     { id: "trends", label: "Trends", route: "/dashboard/trends" },
-    { id: "recent", label: "Recent", route: "/dashboard/recent" },
     { id: "compare", label: "Compare", route: "/dashboard/compare" },
     { id: "next-buyer", label: "Next Buyer", route: "/dashboard/next-buyer" },
-] as const;
-
-export const TIME_PERIODS = [
-    { id: "3_months", label: "3M", months: 3 },
-    { id: "6_months", label: "6M", months: 6 },
-    { id: "12_months", label: "12M", months: 12 },
 ] as const;
