@@ -47,7 +47,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 1000)->get($url, $params);
 
             if ($response->successful()) {
                 return $response->json();
@@ -74,7 +74,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 1000)->get($url, $params);
 
             if ($response->successful()) {
                 $data = $response->json();
@@ -102,7 +102,7 @@ class SteamApiService
         ];
 
         try {
-            $response = $this->getHttpClient()->retry(3, 250)->get($url, $params);
+            $response = $this->getHttpClient()->retry(3, 1000)->get($url, $params);
 
             if ($response->successful()) {
                 return $response->json();
