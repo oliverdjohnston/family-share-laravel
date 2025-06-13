@@ -4,7 +4,7 @@ import { LinkButton } from "@/components/ui/link-button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { PageProps } from "@/types";
 import { Link, router, usePage } from "@inertiajs/react";
-import { ChevronDown, Home, LayoutDashboard, LogOut, Menu, User } from "lucide-react";
+import { ChevronDown, EditIcon, Home, LayoutDashboard, LogOut, Menu, User } from "lucide-react";
 import { useState } from "react";
 import { route } from "ziggy-js";
 
@@ -24,7 +24,12 @@ export function Navigation() {
 
     const navigationItems = [
         { routeName: "home", label: "Home", icon: Home },
-        ...(auth?.user ? [{ routeName: "dashboard", label: "Dashboard", icon: LayoutDashboard }] : []),
+        ...(auth?.user
+            ? [
+                  { routeName: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+                  { routeName: "library.edit", label: "Edit Library", icon: EditIcon },
+              ]
+            : []),
     ];
 
     return (

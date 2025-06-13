@@ -33,11 +33,25 @@ export interface ComparisonGame {
     user_name: string;
     user_id: number;
     acquired_at: string;
-    acquired_at_raw: string;
+    acquired_at_raw?: string;
+    acquired_at_display?: string;
     appid: string;
     steam_value: number;
     cdkeys_value: number;
     icon_url: string | null;
+}
+
+export interface LibraryEditData {
+    comparisonGames: ComparisonGame[];
+    currentUser: {
+        id: number;
+        name: string;
+    };
+    allUsers: {
+        id: number;
+        name: string;
+    }[];
+    showAllUsers: boolean;
 }
 
 export interface MonthlyTrend {

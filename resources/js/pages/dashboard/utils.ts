@@ -6,8 +6,9 @@ import { toast } from "sonner";
 /**
  * Format currency values consistently
  */
-export const formatCurrency = (value: number | null | undefined): string => {
-    return `£${(value || 0).toFixed(2)}`;
+export const formatCurrency = (value: number | string | null | undefined): string => {
+    const numValue = typeof value === "string" ? parseFloat(value) : value;
+    return `£${(numValue || 0).toFixed(2)}`;
 };
 
 /**

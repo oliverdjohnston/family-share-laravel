@@ -253,4 +253,11 @@ body {
         min-height: 100vh;
         scroll-behavior: smooth;
     }
+
+    /* prevent radix modals from shifting layout */
+    body[data-scroll-locked] {
+        padding-right: 0 !important;
+        margin-right: 0 !important;
+        overflow: auto !important;
+    }
 }
