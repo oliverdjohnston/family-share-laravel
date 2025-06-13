@@ -71,6 +71,8 @@ export default function LibraryEdit({ comparisonGames, showAllUsers }: LibraryEd
             "/library/edit",
             { updates },
             {
+                preserveScroll: true,
+                preserveState: true,
                 onSuccess: () => exitEditMode(),
                 onError: (error) => console.error("Failed to save changes:", error),
             },
@@ -85,6 +87,8 @@ export default function LibraryEdit({ comparisonGames, showAllUsers }: LibraryEd
     const deleteGame = () => {
         if (deleteGameId) {
             router.delete(`/library/edit/${deleteGameId}`, {
+                preserveScroll: true,
+                preserveState: true,
                 onSuccess: () => {
                     setDeleteGameId(null);
                     setDeleteGameName("");
